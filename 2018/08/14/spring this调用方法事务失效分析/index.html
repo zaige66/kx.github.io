@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CH" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="记录、随笔、生活">
+  <meta name="author" content="kx">
+  <meta name="keywords" content="">
+  <title>spring this调用方法事务失效分析 - kx的小站</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Zaige</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Startseite
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archiv
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Kategorie
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Etiketten
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                Über mich
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="spring this调用方法事务失效分析">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2018-08-14 21:56" pubdate>
+        August 14, 2018 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      18
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">spring this调用方法事务失效分析</h1>
+            
+            <div class="markdown-body">
+              <p>问题</p>
+<p>       a方法，b方法，都通过aop加上了事物控制，a中调用了b方法，那么一共几次事物</p>
+<p>准备</p>
+<p>      1.创建数据库</p>
+<p>– 创建数据库<br>use test;<br>– 建表<br>create table account(<br>  id int not null auto_increment,<br>  name varchar(20) not null ,<br>  money double not null<br>);<br>INSERT into account(id,name,money) VALUE<br>  (1,”aaa”,1000),<br>  (1,”bbb”,1000),<br>  (1,”ccc”,1000)</p>
+<p>      2.xml配置，实例化了两个 service 类，一个dao类，开启事务注解驱动</p>
+<!--spring事务管理器-->
+<pre><code>&lt;bean name=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+    &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+
+&lt;tx:annotation-driven transaction-manager=&quot;transactionManager&quot;&gt;&lt;/tx:annotation-driven&gt;
+
+
+&lt;!--配置业务层--&gt;
+&lt;bean id=&quot;accountDaoImpl&quot; class=&quot;com.test.demo4.AccountDaoImpl&quot;&gt;
+    &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+&lt;bean id=&quot;accountServiceImpl&quot; class=&quot;com.test.demo4.AccountServiceImpl&quot;&gt;&lt;/bean&gt;
+&lt;bean id=&quot;accountServiceImpl2&quot; class=&quot;com.test.demo4.AccountServiceImpl2&quot;&gt;&lt;/bean&gt;</code></pre>
+<p>      3.dao 类</p>
+<p>public class AccountDaoImpl extends JdbcDaoSupport implements AccountDao {</p>
+<pre><code>@Override
+public void add(String name, double money) &#123;
+    String sql = &quot;update `account` set money = money + &quot;+money+&quot; where `name` = &#39;&quot;+name+&quot;&#39;&quot;;
+    getJdbcTemplate().execute(sql);
+&#125;
+
+@Override
+public void reduce(String name, double money) &#123;
+    String sql = &quot;update `account` set money = money - &quot;+money+&quot; where `name` =  &#39;&quot;+name+&quot;&#39;&quot;;
+    getJdbcTemplate().execute(sql);
+&#125;</code></pre>
+<p>}<br>     4.service 类</p>
+<p>// service 1<br>public class AccountServiceImpl  implements AccountService {<br>    @Autowired<br>    private AccountDao accountDao;<br>    @Autowired<br>    private AccountServiceImpl2 accountServiceImpl2;</p>
+<pre><code>@Override
+public void transfer(String from, String to, double money) &#123;
+    add(to,money);
+    try &#123;
+        //accountServiceImpl2.reduce(from,money);
+        reduce(from,money);
+    &#125;catch (Exception e)&#123;
+        System.out.println(&quot;1111111&quot;);
+    &#125;
+
+&#125;
+
+public void  add(String to, double money)&#123;
+    accountDao.add(to,money);
+&#125;
+
+public void  reduce(String to, double money)&#123;
+   int i = 1/0;
+    accountDao.reduce(to,money);
+&#125;</code></pre>
+<p>}</p>
+<p>// service 2<br>public class AccountServiceImpl2  {<br>    @Autowired<br>    private AccountDao accountDao;</p>
+<p>   @Transactional(propagation = Propagation.REQUIRED, readOnly = false)<br>    public void  reduce(String to, double money){<br>       int i = 1/0;<br>        accountDao.reduce(to,money);<br>    }<br>}<br>    5.测试类</p>
+<p>@RunWith(SpringJUnit4ClassRunner.class)<br>@ContextConfiguration(“classpath:applicationContext4.xml”)<br>public class TestService {<br>    @Autowired<br>    private AccountService accountService;</p>
+<pre><code>@Test
+public void test()&#123;
+    accountService.transfer(&quot;aaa&quot;,&quot;bbb&quot;,200);
+&#125;</code></pre>
+<p>}<br>测试</p>
+<p>      1.当 a , b 方法在同一个类中时，两个方法的 事务传播行为都设置为 Propagation.REQUIRED</p>
+<p>          即 AccountServiceImpl 中transfer 的内容为</p>
+<p>@Transactional(propagation = Propagation.REQUIRED, readOnly = false)<br>    @Override<br>    public void transfer(String from, String to, double money) {<br>        add(to,money);<br>        try {<br>            //accountServiceImpl2.reduce(from,money);<br>            reduce(from,money);<br>        }catch (Exception e){<br>            System.out.println(“1111111”);<br>        }</p>
+<pre><code>&#125;</code></pre>
+<p>         AccountServiceImpl 中reduce 的内容为</p>
+<p>@Transactional(propagation = Propagation.REQUIRED, readOnly = false)<br> public void  reduce(String to, double money){<br>    int i = 1/0;<br>     accountDao.reduce(to,money);<br> }</p>
+<p>测试结果：</p>
+<p>当设置 AccountServiceImpl 中transfer 的传播行为是 Propagation.REQUIRED，AccountServiceImpl 中reduce 的传播行为是 REQUIRES_NEW 时，</p>
+<p>测试结果：</p>
+<p>2.当 a , b 方法不在同一个类中时，两个方法的 事务传播行为都设置为 Propagation.REQUIRED</p>
+<p>即 AccountServiceImpl 中transfer 的内容为</p>
+<p>@Transactional(propagation = Propagation.REQUIRED, readOnly = false)<br>    @Override<br>    public void transfer(String from, String to, double money) {<br>        add(to,money);<br>        try {<br>            accountServiceImpl2.reduce(from,money);<br>            //reduce(from,money);<br>        }catch (Exception e){<br>            System.out.println(“1111111”);<br>        }</p>
+<pre><code>&#125;</code></pre>
+<p>AccountServiceImpl2 中reduce 的内容为</p>
+<p>@Transactional(propagation = Propagation.REQUIRED, readOnly = false)<br> public void  reduce(String to, double money){<br>    int i = 1/0;<br>     accountDao.reduce(to,money);<br> }</p>
+<p>测试结果：，控制台抛出异常  org.springframework.transaction.UnexpectedRollbackException: Transaction rolled back because it has been marked as rollback-only</p>
+<p>当设置 AccountServiceImpl 中transfer 的传播行为是 Propagation.REQUIRED，AccountServiceImpl2 中reduce 的传播行为是 Propagation.REQUIRES_NEW 时，</p>
+<p>测试结果：，控制台正常</p>
+<p>总结：</p>
+<p>        1.当a,b方法在同一个类中时，不管 b 方法设置何种 传播行为，a,b方法都共用一个事务（具体实现方式还未深究）。</p>
+<p>        2.当a,b方法不在同一个类中时，事务的传播行为看 b 方法的注解配置，b 方法配置 Propagation.REQUIRED 是，与a方法共用事务，</p>
+<p>当 b 中产生异常，b 方法把 事务 标记 为回滚，然后把异常抛给 a 方法，a 方法对异常进行了捕获，所以 a 方法内无异常，a方法会 对事务 进行提交操作，但是b 方法已经把 该事务 标记为 回滚，所以 会抛出异常。解决这个的办法就是把 b 方法配置为 Propagation.REQUIRES_NEW，这样 b 方法会产生新的 事务，结果就是 b 的事务回滚，a 的事务正常提交</p>
+<p>如有说的不对地方，欢迎大家拍砖！</p>
+<hr>
+<p>上面总结中的第一点，经过一番百度，有一篇比较深入的讲解博客，附上连接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/jiesa/article/details/53438342%E3%80%82">https://blog.csdn.net/jiesa/article/details/53438342。</a></p>
+<p>但是对于该博客的分析中，我还是有点疑问 ：</p>
+<p>博文中说 当调用本类方法时，此时的 this 是指向被代理的对象的</p>
+<p>测试确实如此，那为什么不是 指向 spring 生成的代理类呢？</p>
+<p>希望知道的朋友能知导一二，谢谢！</p>
+<hr>
+<p>又找到了两个说的很透彻的链接了！</p>
+<p><a target="_blank" rel="noopener" href="http://www.importnew.com/28793.html">http://www.importnew.com/28793.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://my.oschina.net/guangshan/blog/1797461">https://my.oschina.net/guangshan/blog/1797461</a></p>
+<p>JDK 动态代理</p>
+<p>JdkDynamicAopProxy 类的invoke方法<br>Cglib动态代理</p>
+<p>CglibAopProxy 类中设置了callback   为 DynamicAdvisedInterceptor 类</p>
+<p>我们配置的 aop 切面，实际是以责任链的方式执行的，然后调用的<em>被代理的对象</em>执行响应的方法，所以在方法中断点查看this对象，发现不是代理对象，就是当前的类。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/java/">java</a>
+                    
+                      <a class="hover-with-bg" href="/categories/java/spring/">spring</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/spring/">spring</a>
+                    
+                      <a class="hover-with-bg" href="/tags/java/">java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/aop/">aop</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/11/15/elk/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ELK搭建流程 从0到1 包含过程中遇到的问题</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a rel="nofollow noopener"><span>KX</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
