@@ -1,0 +1,509 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CH" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="记录、随笔、生活">
+  <meta name="author" content="kx">
+  <meta name="keywords" content="">
+  <title>区块链环境搭建(composer/playground/explorer) - kx的小站</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Zaige</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="区块链环境搭建(composer/playground/explorer)">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2018-12-07 14:35" pubdate>
+        December 7, 2018 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      22
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">区块链环境搭建(composer/playground/explorer)</h1>
+            
+            <div class="markdown-body">
+              <p>@[toc]</p>
+<h1 id="composer-搭建过程"><a href="#composer-搭建过程" class="headerlink" title="composer 搭建过程"></a>composer 搭建过程</h1><ol>
+<li>​基本概念与第一个区块链应用 安装文档：<a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/cloud/library/cl-lo-hyperledger-fabric-study-notes1/index.html">https://www.ibm.com/developerworks/cn/cloud/library/cl-lo-hyperledger-fabric-study-notes1/index.html</a></li>
+<li>​参考网址：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_27818541/article/details/78727076#%E4%B8%80-%E5%BC%80%E5%90%AFfabric%E5%8C%BA%E5%9D%97%E9%93%BE%E7%BD%91%E7%BB%9C">https://blog.csdn.net/qq_27818541/article/details/78727076#%E4%B8%80-%E5%BC%80%E5%90%AFfabric%E5%8C%BA%E5%9D%97%E9%93%BE%E7%BD%91%E7%BB%9C</a><h1 id="搭建过程中修改的地方"><a href="#搭建过程中修改的地方" class="headerlink" title="搭建过程中修改的地方"></a>搭建过程中修改的地方</h1><h2 id="修改一（执行-startFabric-sh-脚本时）"><a href="#修改一（执行-startFabric-sh-脚本时）" class="headerlink" title="修改一（执行 startFabric.sh 脚本时）"></a>修改一（执行 startFabric.sh 脚本时）</h2> 1.fabfir-tools/startFabric.sh 脚本执行时会调用 fabfir-tools/_loader.sh<br> 2.fabfir-tools/_loader.sh 脚本中 会有一段代码 export FABRIC_VERSION=”hlfv12”，把 hlfv12 修改成 hlfv11<br> 3.hlfv11 对应 fabfir-tools/fabric-scripts/hlfv11 这个文件夹</li>
+</ol>
+<p>修改的原因：hlfv12 版本与当前系统的 fabric 版本不相符，执行不了 hlfv12 文件夹中的脚本</p>
+<h2 id="修改二（执行-createPeerAdminCard-sh-脚本时）"><a href="#修改二（执行-createPeerAdminCard-sh-脚本时）" class="headerlink" title="修改二（执行 createPeerAdminCard.sh 脚本时）"></a>修改二（执行 createPeerAdminCard.sh 脚本时）</h2><pre><code>1.调用 fabfir-tools/createPeerAdminCard.sh 最后执行的是 fabfir-tools/fabric-scripts/hlfv11/createPeerAdminCard.sh 脚本（前提是 执行了修改一）
+2.&quot;peers&quot;: &#123;
+    &quot;peer0.org1.example.com&quot;: &#123;
+        &quot;url&quot;: &quot;grpc://$&#123;HOST&#125;:7051&quot;,
+在这个节点下 加入 &quot;eventUrl&quot;: &quot;grpcs://$&#123;HOST&#125;:7053&quot;, 这个配置，不然执行脚本的时候会报错</code></pre>
+<h2 id="修改三（执行-createPeerAdminCard-sh-脚本时）"><a href="#修改三（执行-createPeerAdminCard-sh-脚本时）" class="headerlink" title="修改三（执行 createPeerAdminCard.sh 脚本时）"></a>修改三（执行 createPeerAdminCard.sh 脚本时）</h2><pre><code>1.脚本中有一段逻辑是这样的：
+    &quot;$&#123;HL_COMPOSER_CLI&#125;&quot;  card import --file $&#123;CARDOUTPUT&#125;
+    意思是把 生成的card文件 导入到 composer 中，执行的时候会报错，错误信息如下：
+        Error: Failed to create client from connection profile. Error: PEM encoded certificate is required.
+    这个没有搜到到具体的答案，我尝试修改的是在该脚本
+        &quot;peers&quot;: &#123;
+        &quot;peer0.org1.example.com&quot;: &#123;
+            &quot;url&quot;: &quot;grpc://$&#123;HOST&#125;:7051&quot;,
+    这个节点下，加入内容：
+         &quot;tlsCACerts&quot;: &#123;
+                &quot;pem&quot;: &quot;-----BEGIN CERTIFICATE-----MIICGjCCAcCgAwIBAgIRANuOnVN+yd/BGyoX7ioEklQwCgYIKoZIzj0EAwIwczELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2NhLm9yZzEuZXhhbXBsZS5jb20wHhcNMTcwNjI2MTI0OTI2WhcNMjcwNjI0MTI0OTI2WjBbMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNjbzEfMB0GA1UEAwwWQWRtaW5Ab3JnMS5leGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABGu8KxBQ1GkxSTMVoLv7NXiYKWj5t6DhWRTJBHnLkWV7lRUfYaKAKFadSii5M7Z7ZpwD8NS7IsMdPR6Z4EyGgwKjTTBLMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAAMCsGA1UdIwQkMCKAIBmrZau7BIB9rRLkwKmqpmSecIaOOr0CF6Mi2J5H4aauMAoGCCqGSM49BAMCA0gAMEUCIQC4sKQ6CEgqbTYe48az95W9/hnZ+7DI5eSnWUwV9vCd/gIgS5K6omNJydoFoEpaEIwM97uSXVMHPa0iyC497vdNURA=-----END CERTIFICATE-----&quot;
+            &#125;</code></pre>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">pem 对应的值是 fabfir-tools<span class="hljs-regexp">/fabric-scripts/</span>hlfv11<span class="hljs-regexp">/composer/</span>crypto-config<span class="hljs-regexp">/peerOrganizations/</span>org1.example.com<span class="hljs-regexp">/users/</span>Admin@org1.example.com<span class="hljs-regexp">/msp/</span>signcerts/Admin@org1.example.com-cert.pem 该文件的内容，加入该内容后，执行正常<br></code></pre></td></tr></table></figure>
+<h2 id="修改四（执行-yo-hyperledger-composer-businessnetwork-命令时）"><a href="#修改四（执行-yo-hyperledger-composer-businessnetwork-命令时）" class="headerlink" title="修改四（执行 yo hyperledger-composer:businessnetwork 命令时）"></a>修改四（执行 yo hyperledger-composer:businessnetwork 命令时）</h2><pre><code>错误信息：
+    [root@peer0 fabfir-tools]# yo hyperledger-composer:businessnetwork
+    Welcome to the business network generator
+    ? Business network name: tutorial-network
+    ? Description: kk
+    ? Author name:  kk
+    ? Author email: kk@qq.com
+    ? License: Apache-2.0
+    ? Namespace: org.example.biznet
+    events.js:183
+          throw er; // Unhandled &#39;error&#39; event
+          ^
+    Error: EACCES: permission denied, mkdir &#39;/opt/test/fabfir-tools/tutorial-network&#39;
+        at Object.fs.mkdirSync (fs.js:885:18)
+        at Function.sync (/usr/local/lib/node_modules/generator-hyperledger-composer/node_modules/mkdirp/index.js:71:13)
+        at child.Base.destinationRoot (/usr/local/lib/node_modules/generator-hyperledger-composer/node_modules/yeoman-generator/lib/base.js:701:14)</code></pre>
+<p>解决办法：chmod 777 fabfir-tools</p>
+<h1 id="启动命名"><a href="#启动命名" class="headerlink" title="启动命名"></a>启动命名</h1><h2 id="composer"><a href="#composer" class="headerlink" title="composer"></a>composer</h2><h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs typescript">第一次启动（照着上面的搭建流程）：<br>nohup composer-rest-server -c admin<span class="hljs-meta">@tutorial</span>-network -n <span class="hljs-built_in">never</span> -p <span class="hljs-number">82</span> &gt;<span class="hljs-regexp">/dev/</span><span class="hljs-literal">null</span> <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> &amp; <br><br>停止后重新启动：<br>	部署业务网络<br>		composer network install --card PeerAdmin<span class="hljs-meta">@hlfv1</span> --archiveFile tutorial-network@<span class="hljs-number">0.0</span><span class="hljs-number">.1</span>.bna<br>	启动业务网络<br>		composer network start --networkName tutorial-network --networkVersion <span class="hljs-number">0.0</span><span class="hljs-number">.1</span> --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin<span class="hljs-meta">@hlfv1</span> --file networkadmin.card<br>	启动服务<br>		nohup composer-rest-server -c admin<span class="hljs-meta">@tutorial</span>-network -n <span class="hljs-built_in">never</span> -p <span class="hljs-number">82</span> &gt;<span class="hljs-regexp">/dev/</span><span class="hljs-literal">null</span> <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> &amp;<br></code></pre></td></tr></table></figure>
+<h3 id="停止"><a href="#停止" class="headerlink" title="停止"></a>停止</h3><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-keyword">cd</span> fabfir-tools<br><span class="hljs-string">./stopFabric.sh</span><br></code></pre></td></tr></table></figure>
+<h2 id="playgroud"><a href="#playgroud" class="headerlink" title="playgroud"></a>playgroud</h2><h3 id="启动-1"><a href="#启动-1" class="headerlink" title="启动"></a>启动</h3><pre><code>nohup composer-playground -p 81 &gt;/dev/null 2&gt;&amp;1 &amp;</code></pre>
+<h3 id="停止-1"><a href="#停止-1" class="headerlink" title="停止"></a>停止</h3><pre><code>[root@peer0 fabfir-tools]# netstat -tunpl | grep 82
+tcp6       0      0 :::82                   :::*                    LISTEN      14878/node
+[root@peer0 fabfir-tools]# kill 14878</code></pre>
+<h2 id="explorer"><a href="#explorer" class="headerlink" title="explorer"></a>explorer</h2><h3 id="启动-2"><a href="#启动-2" class="headerlink" title="启动"></a>启动</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">cd <span class="hljs-regexp">/opt/</span>test/blockchain-explorer<br>./start.sh<br><br>启动端口的设置在 <span class="hljs-regexp">/opt/</span>test<span class="hljs-regexp">/blockchain-explorer/</span>config.json  <span class="hljs-string">&quot;prot&quot;</span>:<span class="hljs-number">83</span><br></code></pre></td></tr></table></figure>
+<h3 id="停止-2"><a href="#停止-2" class="headerlink" title="停止"></a>停止</h3><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs elixir">[root<span class="hljs-variable">@peer0</span> fabfir-tools]<span class="hljs-comment"># netstat -tunpl | grep 83</span><br>tcp6       0      0 ::<span class="hljs-symbol">:</span><span class="hljs-number">82</span>                   ::<span class="hljs-symbol">:*</span>                    LISTEN      <span class="hljs-number">14878</span>/node<br>[root<span class="hljs-variable">@peer0</span> fabfir-tools]<span class="hljs-comment"># kill 14878</span><br></code></pre></td></tr></table></figure>
+<h1 id="fabric-操作"><a href="#fabric-操作" class="headerlink" title="fabric 操作"></a>fabric 操作</h1><h2 id="查看-部署成功的网络"><a href="#查看-部署成功的网络" class="headerlink" title="查看 部署成功的网络"></a>查看 部署成功的网络</h2><pre><code>在服务已经起起来的前提下：
+    docker exec -it peer0.org1.example.com /bin/bash
+    ls /var/hyperledger/production/chaincodes/</code></pre>
+<h2 id="查看部署的channel"><a href="#查看部署的channel" class="headerlink" title="查看部署的channel"></a>查看部署的channel</h2><pre><code>在服务已经起起来的前提下：
+    docker exec -it peer0.org1.example.com /bin/bash
+    peer channel list</code></pre>
+<h1 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h1><p>在playgroud中升级业务网络时</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">Error: </span>Error trying to upgrade business network. Error: No valid responses from any peers. Response from attempted peer comms was an error: Error: 8 RESOURCE_EXHAUSTED: received trailing metadata size exceeds limit<br><br>硬盘内存不足<br></code></pre></td></tr></table></figure>
+<p>在启动 explorer 时</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs applescript">Handshake failed <span class="hljs-keyword">with</span> fatal <span class="hljs-keyword">error</span> SSL_ERROR_SSL: <span class="hljs-keyword">error</span>:<span class="hljs-number">1408</span>F10B:SSL routines <span class="hljs-built_in">version</span> <span class="hljs-built_in">number</span><br><br>把 config.json 中的 grpcs 改成 grpc<br></code></pre></td></tr></table></figure>
+<p>通过composer写入区块信息，再通过explorer获取写入的信息时</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">正常返回值：<br>&#123;&quot;status&quot;:<span class="hljs-number">200</span>,&quot;rows&quot;:[&#123;&quot;id&quot;:<span class="hljs-number">40</span>,&quot;blocknum&quot;:<span class="hljs-number">9</span>,&quot;datahash&quot;:&quot;3f1b67d9050a3e86cc5367d4eccbee92bf7b4e9f3c98d8ac8e4debcedbc767d0&quot;,&quot;prehash&quot;:&quot;c4c3384877cffae8fa92fd798bca268c08be42e0c7ec3eb51e6cc3e1bba57aa8&quot;,&quot;channelname&quot;:&quot;composerchannel&quot;,&quot;txcount&quot;:<span class="hljs-number">1</span>,&quot;createdt&quot;:&quot;2018-12-12T02:12:21.000Z&quot;,&quot;prev_blockhash&quot;:<span class="hljs-keyword">null</span>,&quot;blockhash&quot;:<span class="hljs-keyword">null</span>,&quot;txhash&quot;:[&quot;cd656e737c1a76382f888f750318141eb466b1b4b79d1ce3365b3fd9bc82949d&quot;]&#125;]&#125;<br>返回的txhash数组里只有一个值<br><br>遇到的错误返回值：<br>&#123;&quot;status&quot;:<span class="hljs-number">200</span>,&quot;rows&quot;:[&#123;&quot;id&quot;:<span class="hljs-number">40</span>,&quot;blocknum&quot;:<span class="hljs-number">9</span>,&quot;datahash&quot;:&quot;3f1b67d9050a3e86cc5367d4eccbee92bf7b4e9f3c98d8ac8e4debcedbc767d0&quot;,&quot;prehash&quot;:&quot;c4c3384877cffae8fa92fd798bca268c08be42e0c7ec3eb51e6cc3e1bba57aa8&quot;,&quot;channelname&quot;:&quot;composerchannel&quot;,&quot;txcount&quot;:<span class="hljs-number">1</span>,&quot;createdt&quot;:&quot;2018-12-12T02:12:21.000Z&quot;,&quot;prev_blockhash&quot;:<span class="hljs-keyword">null</span>,&quot;blockhash&quot;:<span class="hljs-keyword">null</span>,&quot;txhash&quot;:[&quot;cd656e737c1a76382f888f750318141eb466b1b4b79d1ce3365b3fd9bc82949d&quot;,&quot;79d304b942e629151433dca8d32b6871882f55e398669eb9d0f89630bb970c85&quot;]&#125;]&#125;<br>返回的txhash数组里有多个值<br><br>原因：<br>	以前添加了一个mychannel通道，现在又新加入了一个composerchannel通道，在查询 postgre 数据库的 <span class="hljs-keyword">transaction</span> 表（里面存放的txhash值）时，没有加入（channelname）条件判断，导致把以前mychannel中的数据也插叙出来了<br><br>解决过程：<br>	<span class="hljs-number">1.</span>查询explorer区块信息时，访问的接口是/api/blockAndTxList/channelName/blocknum<br>	<span class="hljs-number">2.</span>进入到blockchain-explorer项目，查看 main.js（这里写的接口逻辑） 文件，查找上面接口的处理逻辑<br>	<span class="hljs-number">3.</span>查询到处理逻辑是调用 blockchain-explorer/app/models/block.js 的 getBlockAndTxList方法<br>	<span class="hljs-number">4.</span>该方法中 到 postgre 数据库中执行 查询的<span class="hljs-keyword">sql</span>语句<br>		原语句：<br>			 <span class="hljs-keyword">select</span> blocks.*,(<br>    <span class="hljs-keyword">SELECT</span>  array_agg(txhash) <span class="hljs-keyword">as</span> txhash <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">transaction</span> <span class="hljs-keyword">where</span> blockid = blocks.blocknum<br> 	 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> <span class="hljs-keyword">transaction</span>.blockid )  <span class="hljs-keyword">from</span> blocks <span class="hljs-keyword">where</span><br>     blocks.channelname =<span class="hljs-string">&#x27;$&#123;channelName&#125;&#x27;</span> <span class="hljs-keyword">and</span> blocknum &gt;= $&#123;blockNum&#125;<br>     <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> blocks.blocknum <span class="hljs-keyword">desc</span>`;<br>     	改变后的语句：<br>     		 <span class="hljs-keyword">select</span> blocks.*,(<br>    <span class="hljs-keyword">SELECT</span>  array_agg(txhash) <span class="hljs-keyword">as</span> txhash <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">transaction</span> <span class="hljs-keyword">where</span> blockid = blocks.blocknum<br> <span class="hljs-keyword">and</span> channelname=<span class="hljs-string">&#x27;$&#123;channelName&#125;&#x27;</span>    <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> <span class="hljs-keyword">transaction</span>.blockid )  <span class="hljs-keyword">from</span> blocks <span class="hljs-keyword">where</span><br>     blocks.channelname =<span class="hljs-string">&#x27;$&#123;channelName&#125;&#x27;</span> <span class="hljs-keyword">and</span> blocknum &gt;= $&#123;blockNum&#125;<br>     <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> blocks.blocknum <span class="hljs-keyword">desc</span>`;<br>     改变的位置：在查询 <span class="hljs-keyword">transaction</span> 表时加上channelName的条件判断<br> 总结：<br> 	遇到无法理解和不好百度搜索的问题时，根据程序逻辑一步步走，然后大胆猜测<br></code></pre></td></tr></table></figure>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/linux/">linux</a>
+                    
+                      <a class="hover-with-bg" href="/categories/linux/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/composer/">composer</a>
+                    
+                      <a class="hover-with-bg" href="/tags/playground/">playground</a>
+                    
+                      <a class="hover-with-bg" href="/tags/explorer/">explorer</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/12/18/jenkins/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">jenkins 使用 总结</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/11/15/elk/">
+                        <span class="hidden-mobile">ELK搭建流程 从0到1 包含过程中遇到的问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a rel="nofollow noopener"><span>KX</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
