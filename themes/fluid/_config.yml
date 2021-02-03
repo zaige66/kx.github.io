@@ -725,7 +725,7 @@ archive:
   banner_img: /img/default.png
   banner_img_height: 60
   banner_mask_alpha: 0.3
-  subtitle:
+  subtitle: 回首过往，杨帆起航
 
 
 #---------------------------
@@ -737,7 +737,7 @@ category:
   banner_img: /img/default.png
   banner_img_height: 60
   banner_mask_alpha: 0.3
-  subtitle:
+  subtitle: 分门别类，思路清晰
 
   # 单个分类中折叠展示文章数的最大值，超过限制会显示 More
   # The maximum number of posts in a single category. If the limit is exceeded, it will be displayed More
@@ -760,9 +760,9 @@ category:
 tag:
   enable: true
   banner_img: /img/default.png
-  banner_img_height: 80
+  banner_img_height: 60
   banner_mask_alpha: 0.3
-  subtitle:
+  subtitle: 随心而动，无惧标签
   tagcloud:
     min_font: 15
     max_font: 30
@@ -780,7 +780,7 @@ about:
   banner_img: /img/default.png
   banner_img_height: 60
   banner_mask_alpha: 0.3
-  subtitle:  # 打字机内容
+  subtitle: 你想了解我吗
   avatar: /img/avatar.png
   name: "Fluid"
   introduce: "An elegant theme for Hexo"
