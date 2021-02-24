@@ -176,6 +176,62 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/02/24/spring_Registrar/">通过spring Registrar扩展点，实现同一个接口根据配置文件来加载不同的实现类</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/02/24/spring_Registrar/">
+          
+          
+            
+          
+          @[toc]
+写在前面12现有场景：	模块业务有多种实现情况，需要有多个实现类，并且多个实现类需要根据配置文件来进行切换
+排除已有的类的加载
+通过@ComponentScan注解来排除扫描的包
+注意排除规则要加上 「.*」12345@SpringBootApplication@ComponentScan(basePackages = &#123;&quot;net.rjgf&quot;&#125;
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-02-24 17:17" pubdate>
+              2021-02-24
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/java/">java</a>
+            
+              <a href="/categories/java/spring/">spring</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/spring/">spring</a>
+            
+              <a href="/tags/java/">java</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/02/03/mysql_backup/">mysql半自动备份</a>
       </h1>
 
@@ -657,69 +713,6 @@ composer 搭建过程
               <a href="/tags/playground/">playground</a>
             
               <a href="/tags/explorer/">explorer</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2018/11/15/elk/">ELK搭建流程 从0到1 包含过程中遇到的问题</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2018/11/15/elk/">
-          
-          
-            
-          
-          @[toc]闲言碎语不要讲，开始！
-ELK环境搭建
-参考链接：https://blog.csdn.net/liuge36/article/details/79768152
-
-需要注意的地方
-JDK1.8以上
-
-elasticsearch 启动时不能以 root 用户启动
-问题汇总elasticsearch1.启动后外网访问不了
-参考地址：https://blog.csdn.net/buzaiQQ/
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2018-11-15 16:17" pubdate>
-              2018-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/linux/">linux</a>
-            
-              <a href="/categories/linux/elk/">elk</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/ELK/">ELK</a>
-            
-              <a href="/tags/kibana/">kibana</a>
-            
-              <a href="/tags/logstash/">logstash</a>
             
           </div>
         
